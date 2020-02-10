@@ -38,6 +38,10 @@ class MaxiNetConfig(RawConfigParser):
         logging.basicConfig(level=level)
 
     @Pyro4.expose
+    def get_physical_network_file(self):
+        return self.getint("all", "physical_network_file")
+
+    @Pyro4.expose
     def get_nameserver_port(self):
         return self.getint("all", "port_ns")
 
