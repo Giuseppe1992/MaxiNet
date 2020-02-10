@@ -49,6 +49,7 @@ from MaxiNet.Frontend.partitioner import Partitioner
 
 from MaxiNet.Frontend.distriopt import EmbeddedGreedy, EmbeddedPartitioned, EmbeddedBalanced
 
+MAPPERS= {"EmbeddedGreedy": EmbeddedGreedy, "EmbeddedPartitioned": EmbeddedPartitioned, "EmbeddedBalanced": EmbeddedBalanced}
 
 logger = logging.getLogger(__name__)
 
@@ -954,6 +955,13 @@ class Experiment(object):
         self.node_to_worker = {}
         self.node_to_wrapper = {}
         if distriopt_mapper:
+            if distriopt_mapper not in MAPPERS:
+                raise ValueError("{} is not a valid mapper, use one in {}".format(distriopt_mapper,MAPPERS.keys()))
+            if self.config.physical_network_file():
+                physical_network_file= self.config.get_physical_network_file()
+            mapper = MAPPERS[distriopt_mapper](topology, physical_network_file)
+            hostnamemapping = mapper.create_mapping()
+            physica_infrastructure_file =
             # TODO: implement mapper to modify hostnamemapping variable
             print("distriopt_mapper Not implemented")
             exit(1)
