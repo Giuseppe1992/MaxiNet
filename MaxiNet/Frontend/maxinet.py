@@ -958,13 +958,9 @@ class Experiment(object):
             if distriopt_mapper not in MAPPERS:
                 raise ValueError("{} is not a valid mapper, use one in {}".format(distriopt_mapper,MAPPERS.keys()))
             if self.config.physical_network_file():
-                physical_network_file= self.config.get_physical_network_file()
+                physical_network_file = self.config.get_physical_network_file()
             mapper = MAPPERS[distriopt_mapper](topology, physical_network_file)
             hostnamemapping = mapper.create_mapping()
-            physica_infrastructure_file =
-            # TODO: implement mapper to modify hostnamemapping variable
-            print("distriopt_mapper Not implemented")
-            exit(1)
         if(self.is_valid_hostname_mapping(hostnamemapping)):
             self.hostname_to_workerid = hostnamemapping
         else:
