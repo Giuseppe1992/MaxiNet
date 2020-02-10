@@ -34,14 +34,25 @@ class Mapper(object):
 
         return filename
 
-    def create_mapping(self):
-        pass
+    def create_mapping(self, mapping_json_path):
+        with open(mapping_json_path,"r") as f:
+            mapping=json.load(f)
+
+        if "Infeasible" in mapping:
+            print("MAPPING INFEASIBLE")
+            exit(1)
+        elif "mapping" in mapping:
+            mapping = mapping["mapping"]
+            return mapping
+        else:
+            raise ValueError("Returned value by the script not managed {}".format(mapping))
+
 
     def _run_python3_distriopt(self,virtual_topo_file, physical_topo_file, mapper, python3_script="distriopt_runner.py"):
-        python3_command = "python3 {} {} {} {}".format(python3_script,virtual_topo_file,physical_topo_file,mapper)  # launch your python2 script using bash
+        python3_command = "python3 {} {} {} {}".format(python3_script,virtual_topo_file,physical_topo_file,mapper)  # launch python3 script using bash
 
         process = subprocess.Popen(python3_command.split(), stdout=subprocess.PIPE)
         output, error = process.communicate()
-        output
-        pass
+        #return the temporary path for the mapping
+        return output
 

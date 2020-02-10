@@ -34,7 +34,7 @@ def main():
                 json.dump({"mapping":prob.solution.node_mapping},f)
         else:
             with open(temp.name, "w") as f:
-                json.dump({"Infisible": None}, f)
+                json.dump({"Infeasible": None}, f)
 
 
         print(temp.name, end="")
