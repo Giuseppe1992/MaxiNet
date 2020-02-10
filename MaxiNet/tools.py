@@ -96,6 +96,12 @@ class MaxiNetConfig(RawConfigParser):
         return False
 
     @Pyro4.expose
+    def physical_network_file(self):
+        if(self.has_option("all","physical_network_file")):
+            return self.get("all","physical_network_file")
+        return False
+
+    @Pyro4.expose
     def get_nameserver_ip(self):
         return self.get_frontend_ip()
 
