@@ -9,7 +9,11 @@ class Mapper(object):
     def __init__(self, topo, physical_network_file, mapper):
         self.topo = topo
         self.physical_network_file = physical_network_file
-        self.mapper=mapper
+        self.mapper = mapper
+        self.topo_file = self.create_topo_file(topo)
+        self.mapping_json_path = self._run_python3_distriopt(virtual_topo_file=self.topo_file,
+                                                        physical_topo_file=physical_network_file,
+                                                        mapper=mapper, python3_script="distriopt_runner.py")
 
     @staticmethod
     def check_valid_path(physical_network_file):
@@ -34,9 +38,9 @@ class Mapper(object):
 
         return filename
 
-    def create_mapping(self, mapping_json_path):
-        with open(mapping_json_path,"r") as f:
-            mapping=json.load(f)
+    def create_mapping(self):
+        with open(self.mapping_json_path, "r") as f:
+            mapping = json.load(f)
 
         if "Infeasible" in mapping:
             print("MAPPING INFEASIBLE")
