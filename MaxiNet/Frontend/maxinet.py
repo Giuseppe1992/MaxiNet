@@ -47,6 +47,8 @@ from MaxiNet.Frontend.cli import CLI
 from MaxiNet.tools import Tools, MaxiNetConfig, SSH_Tool
 from MaxiNet.Frontend.partitioner import Partitioner
 
+from MaxiNet.Frontend.distriopt import EmbeddedGreedy, EmbeddedPartitioned, EmbeddedBalanced
+
 
 logger = logging.getLogger(__name__)
 
@@ -909,7 +911,7 @@ class Experiment(object):
     """
     def __init__(self, cluster, topology, controller=None,
                  is_partitioned=False, switch=UserSwitch,
-                 nodemapping=None, hostnamemapping=None, sharemapping=None):
+                 nodemapping=None, hostnamemapping=None, sharemapping=None, distriopt_mapper=None):
         """Inits Experiment.
 
         Args:
@@ -951,6 +953,10 @@ class Experiment(object):
             self.origtopology = topology
         self.node_to_worker = {}
         self.node_to_wrapper = {}
+        if distriopt_mapper:
+            # TODO: implement mapper to modify hostnamemapping variable
+            print("distriopt_mapper Not implemented")
+            exit(1)
         if(self.is_valid_hostname_mapping(hostnamemapping)):
             self.hostname_to_workerid = hostnamemapping
         else:
