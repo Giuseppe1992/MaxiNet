@@ -13,7 +13,7 @@ class Mapper(object):
         self.topo_file = self.create_topo_file(topo)
         self.mapping_json_path = self._run_python3_distriopt(virtual_topo_file=self.topo_file,
                                                         physical_topo_file=physical_network_file,
-                                                        mapper=mapper, python3_script="distriopt_runner.py")
+                                                        mapper=mapper)
 
     @staticmethod
     def check_valid_path(physical_network_file):
@@ -24,13 +24,13 @@ class Mapper(object):
         filename = os.tempnam()
         json_topo={"nodes": {}, "links": {}}
         for node in topo.nodes():
-            attrs = {"cores": topo.nodeInfo(node).get("cores", 0),
-                     "memory": topo.nodeInfo(node).get("memory", 0)}
+            attrs = {"cores": topo.nodeInfo(node).get("cores", 1),
+                     "memory": topo.nodeInfo(node).get("memory", 100)}
             json_topo["nodes"][node] = attrs
 
         for (u, v, attrs) in topo.iterLinks(withInfo=True):
-            u_port, v_port, rate = attrs["port1"], attrs["port2"], attrs["rate"]
-            edge_attrs = {"devices":{u: u_port, v: v_port},"rate":rate}
+            u_port, v_port, rate = attrs["port1"], attrs["port2"], attrs["bw"]
+            edge_attrs = {"rate":rate}
             json_topo["links"][" ".join((u,v))]= edge_attrs
 
         with open(filename, "w") as f:
@@ -52,7 +52,7 @@ class Mapper(object):
             raise ValueError("Returned value by the script not managed {}".format(mapping))
 
 
-    def _run_python3_distriopt(self,virtual_topo_file, physical_topo_file, mapper, python3_script="distriopt_runner.py"):
+    def _run_python3_distriopt(self,virtual_topo_file, physical_topo_file, mapper, python3_script="/root/MaxiNet/MaxiNet/Frontend/distriopt_runner.py"):
         python3_command = "python3 {} {} {} {}".format(python3_script,virtual_topo_file,physical_topo_file,mapper)  # launch python3 script using bash
 
         process = subprocess.Popen(python3_command.split(), stdout=subprocess.PIPE)

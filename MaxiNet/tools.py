@@ -39,7 +39,7 @@ class MaxiNetConfig(RawConfigParser):
 
     @Pyro4.expose
     def get_physical_network_file(self):
-        return self.getint("all", "physical_network_file")
+        return self.get("all", "physical_network_file")
 
     @Pyro4.expose
     def get_nameserver_port(self):
@@ -97,9 +97,10 @@ class MaxiNetConfig(RawConfigParser):
 
     @Pyro4.expose
     def physical_network_file(self):
-        if(self.has_option("all","physical_network_file")):
+        if self.has_option("all","physical_network_file"):
             return self.get("all","physical_network_file")
-        return False
+        else:
+            return False
 
     @Pyro4.expose
     def get_nameserver_ip(self):

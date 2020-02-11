@@ -13,7 +13,7 @@ from mininet.node import OVSSwitch
 topo = FatTree(4, 10, 0.1)
 cluster = maxinet.Cluster()
 
-exp = maxinet.Experiment(cluster, topo, switch=OVSSwitch)
+exp = maxinet.Experiment(cluster, topo, switch=OVSSwitch, distriopt_mapper="EmbeddedPartition")
 exp.setup()
 
 print exp.get_node("h1").cmd("ifconfig")  # call mininet cmd function of h1

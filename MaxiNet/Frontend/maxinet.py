@@ -46,7 +46,7 @@ import Pyro4
 from MaxiNet.Frontend.cli import CLI
 from MaxiNet.tools import Tools, MaxiNetConfig, SSH_Tool
 from MaxiNet.Frontend.partitioner import Partitioner
-from MaxiNet.Frontend.distriopt import Mapper
+from MaxiNet.Frontend.distriopt_ import Mapper
 
 
 MAPPERS= {"EmbeddedGreedy", "EmbeddedPartitioned", "EmbeddedBalanced"}
@@ -958,7 +958,11 @@ class Experiment(object):
             if distriopt_mapper not in MAPPERS:
                 raise ValueError("{} is not a valid mapper, use one in {}".format(distriopt_mapper,MAPPERS))
             if self.config.physical_network_file():
+                print("CONFIGURATION FILE")
                 physical_network_file = self.config.get_physical_network_file()
+                print(physical_network_file)
+            else:
+                raise RuntimeError("physical_network_file not provided")
             mapper = Mapper(topology, physical_network_file, mapper=distriopt_mapper)
             hostnamemapping = mapper.create_mapping()
         if(self.is_valid_hostname_mapping(hostnamemapping)):
