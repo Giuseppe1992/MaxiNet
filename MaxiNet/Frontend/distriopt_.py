@@ -29,8 +29,8 @@ class Mapper(object):
             json_topo["nodes"][node] = attrs
 
         for (u, v, attrs) in topo.iterLinks(withInfo=True):
-            u_port, v_port, rate = attrs["port1"], attrs["port2"], attrs["bw"]
-            edge_attrs = {"rate":rate}
+            rate = attrs["bw"]
+            edge_attrs = {"rate": rate}
             json_topo["links"][" ".join((u,v))]= edge_attrs
 
         with open(filename, "w") as f:
